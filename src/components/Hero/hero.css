@@ -1,0 +1,16 @@
+h1 {
+    color: #eeeeee;
+  }
+  
+  .scrolling-text {
+    color: #00adb5;
+  }
+  
+  .showproduct-btn {
+    background-color: #00adb5;
+  }
+  
+  .showproduct-btn:hover {
+    background-color: #00acb5ae;
+  }
+  
