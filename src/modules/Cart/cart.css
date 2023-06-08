@@ -1,0 +1,11 @@
+.cart:hover {
+    background-color: #00acb5cf;
+}
+
+.cart {
+    background-color: #00ADB5;
+}
+
+body {
+    overflow: auto;
+}

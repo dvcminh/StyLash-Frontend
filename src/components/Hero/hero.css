@@ -1,16 +1,54 @@
 h1 {
-    color: #eeeeee;
-  }
+  color: #eeeeee;
+}
+
+.scrolling-text {
+  color: #00adb5;
+}
+
+.showproduct-btn {
+  background-color: #00adb5;
+}
+
+.showproduct-btn:hover {
+  background-color: #00acb5ae;
+}
+
+* {
+  box-sizing: border-box;
+}
+h1 {
+  font-weight: 300;
+}
+
+
+/* Scroller styling */
+.scroller {
+  height: 1.4em;
+  line-height: 1.4em;
+  position: relative;
+  overflow: hidden;
+  width: 15em;
+}
+.scroller > span {
+  font-size: 1.2em;
+  position: absolute;
+  top: 0;
+  animation: slide 6s infinite;
+  font-weight: bold;
   
-  .scrolling-text {
-    color: #00adb5;
+}
+@keyframes slide {
+  0% {
+    top: 0;
   }
-  
-  .showproduct-btn {
-    background-color: #00adb5;
+  25% {
+    top: -1.2em;
   }
-  
-  .showproduct-btn:hover {
-    background-color: #00acb5ae;
+  50% {
+    top: -2.4em;
   }
-  
+  75% {
+    top: -3.6em;
+  }
+}

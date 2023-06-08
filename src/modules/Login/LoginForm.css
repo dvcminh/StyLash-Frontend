@@ -1,0 +1,29 @@
+.background {
+    background-image: url("../../assets/login_background.jpg");
+}
+
+.border {
+    border: 2px solid #393E46;
+}
+
+.title {
+    color: #00ADB5;
+}
+
+.email, .password {
+    color: #393E46;
+}
+
+.login-button {
+    background-color: #00ADB5;
+    color: #EEEEEE;
+}
+
+.forgot-password {
+    color: #00ADB5;
+}
+
+.login-button:hover {
+    background-color: #00acb5cd;
+    color: #fff;
+}
