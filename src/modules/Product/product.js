@@ -14,10 +14,11 @@ const Product = () => {
   const [heartColor, setHeartColor] = useState("gray");
   const [liked, setLiked] = useState(false);
   const [color, setColor] = useState();
+  const [countLike, setCountLike] = useState(0);
 
   //hàm mới vô load để xem người dùng đã like sản phẩm hay chưa
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchLikeProduct = async () => {
       try {
         const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
         const response = await axios.get(
@@ -38,8 +39,23 @@ const Product = () => {
         console.log(error);
       }
     };
-    fetchProduct();
+    fetchLikeProduct();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchLikeProduct = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:8080/api/products/countLike/${id}`
+  //       );        
+  //       const data = response.data;
+  //       setCountLike(data);
+  //     } catch (error) {
+  //       alert(error);
+  //     }
+  //   };
+  //   fetchLikeProduct();
+  // }, [liked]);
 
   useEffect(() => {
     setColor(liked ? "#00ADB5" : "gray");
@@ -191,7 +207,7 @@ const Product = () => {
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
                 <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2s" />
-                <span className="text">4 Reviews</span>
+                <span className="text">{countLike} Likes</span>
               </span>
             </div>
             <p className="leading-relaxed">{product?.description}</p>

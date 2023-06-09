@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useDropzone } from "react-dropzone";
 import AuthService from "../../Auth/AuthService";
+import { CloudinaryContext, Image } from "cloudinary-react";
+import { v4 as uuidv4 } from "uuid";
+import { Cloudinary } from "cloudinary-core";
+
 import "./RegisterForm.css";
+
+const cloudinary = new Cloudinary({
+  cloud_name: "djxszgsln",
+  api_key: "925724911559638",
+  api_secret: "SvVdpKQunbpo-AmdQQ-81JNqXUw",
+});
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -12,6 +23,7 @@ const RegisterForm = () => {
   const [error, setError] = useState("");
   const [phone_number, setPhone_number] = useState("");
   const [address, setAddress] = useState("");
+  const [avatar, setAvatar] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +37,32 @@ const RegisterForm = () => {
         address,
         role: "MANAGER",
       };
+  
+      if (avatar) {
+        try {
+          const formData = new FormData();
+          formData.append("file", avatar);
+          formData.append("upload_preset", "tu408cqj");
+    
+          const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${cloudinary.config().cloud_name}/upload`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+    
+          const data = await response.json();
+          registerData.avatar = data.secure_url;
+          console.log("data" + data)
+          console.log("data.secure_url" + data.secure_url);
+        }
+        catch (error) {
+          console.log("error: " + error);
+        }        
+      }
+  
+      // Submit registerData to backend
       const response = await AuthService.register(registerData);
       AuthService.setAccessToken(response.access_token);
       AuthService.setRefreshToken(response.refresh_token);
@@ -34,6 +72,18 @@ const RegisterForm = () => {
       setError(error.message);
     }
   };
+
+  const handleAvatarDrop = (acceptedFiles) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setAvatar(acceptedFiles[0]);
+    }
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: handleAvatarDrop,
+    accept: "image/*",
+    multiple: false,
+  });
 
   return (
     <div className="background">
@@ -45,6 +95,31 @@ const RegisterForm = () => {
         </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">
           <form onSubmit={handleSubmit}>
+            <div className="mt-4">
+              <label
+                htmlFor="avatar"
+                className="block text-sm font-medium text-gray-700 undefined"
+              >
+                Avatar
+              </label>
+              <div
+                {...getRootProps()}
+                className={`flex flex-col items-start border-2 border-dashed rounded-md px-4 py-2 mt-2 ${
+                  isDragActive ? "border-purple-400" : "border-gray-400"
+                }`}
+              >
+                <input {...getInputProps()} />
+                {avatar ? (
+                  <img
+                    src={URL.createObjectURL(avatar)}
+                    alt="Avatar"
+                    className="w-24 h-24 object-cover rounded-full"
+                  />
+                ) : (
+                  <p>Drag and drop an image here or click to select</p>
+                )}
+              </div>
+            </div>
             <div className="md:flex">
               <div className="mr-8 mt-4">
                 <label
@@ -75,7 +150,7 @@ const RegisterForm = () => {
                     type="text"
                     name="name"
                     className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-00ADB5-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                    value={firstname}
+                    value={lastname}
                     onChange={(e) => setLastname(e.target.value)}
                   />
                 </div>
