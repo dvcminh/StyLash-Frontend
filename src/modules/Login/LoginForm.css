@@ -27,3 +27,9 @@
     background-color: #00acb5cd;
     color: #fff;
 }
+
+.form-message {
+    font-size: 0.9rem;
+  color: #f33a58;
+  text-align: left;
+}

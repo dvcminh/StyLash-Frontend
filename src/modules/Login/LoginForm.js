@@ -2,46 +2,85 @@ import React, { useState } from "react";
 import AuthService from "../../Auth/AuthService";
 import { useNavigate, Link } from "react-router-dom";
 import { Bird } from "phosphor-react";
+import axios from "axios";
 
 import "./LoginForm.css";
+import MessageBox from "../../components/MessageBox/MeassageBox";
+import { Alert } from "@material-tailwind/react";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailPasswordError, setEmailPasswordError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Reset previous errors
+    setEmailError("");
+    setPasswordError("");
+    setEmailPasswordError("");
+  
+    // Validate input
+    let hasError = false;
+  
+    if (!email) {
+      setEmailError("Please enter your email.");
+      hasError = true;
+    } else {
+      // Regex pattern for email validation
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        setEmailError("Please enter a valid email address.");
+        hasError = true;
+      } else {
+        setEmailError("");
+      }
+    }
+  
+    if (!password) {
+      setPasswordError("Please enter your password.");
+      hasError = true;
+    } else if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters.");
+      hasError = true;
+    }
+  
+    if (hasError) {
+      return;
+    }
+  
     try {
       const loginData = { email, password };
       const response = await AuthService.login(loginData);
       AuthService.setAccessToken(response.access_token);
       AuthService.setRefreshToken(response.refresh_token);
-      console.log("ok");
+
+      const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
+      try {
+        const response1 = await axios.get(
+          "http://localhost:8080/api/v1/management/me",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const data1 = response1.data;
+        localStorage.setItem("userData", JSON.stringify(data1));
+      } catch (error) {
+        console.log(error);   
+      }
       navigate("/");
     } catch (error) {
-      setError(error.message);
+      setEmailPasswordError("Wrong password or email");
     }
   };
 
   return (
-    // <form onSubmit={handleSubmit}>
-    //   <input
-    //     type="email"
-    //     placeholder="Email"
-    //     value={email}
-    //     onChange={(e) => setEmail(e.target.value)}
-    //   />
-    //   <input
-    //     type="password"
-    //     placeholder="Password"
-    //     value={password}
-    //     onChange={(e) => setPassword(e.target.value)}
-    //   />
-    //   <button type="submit">Login</button>
-    //   {error && <p>{error}</p>}
-    // </form>
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden background">
       <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-rose-600/40 lg:max-w-xl border">
         <h1 className="text-3xl font-semibold text-center text-purple-700 underline uppercase decoration-wavy title">
@@ -62,6 +101,7 @@ const LoginForm = () => {
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-00ADB5-300 focus:outline-none focus:ring focus:ring-opacity-40"
               onChange={(e) => setEmail(e.target.value)}
             />
+            {emailError && <div className="form-message">{emailError}</div>}
           </div>
           <div className="mb-2">
             <label
@@ -77,6 +117,7 @@ const LoginForm = () => {
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-00ADB5-300 focus:outline-none focus:ring focus:ring-opacity-40"
               onChange={(e) => setPassword(e.target.value)}
             />
+            {passwordError && <div className="form-message">{passwordError}</div>}
           </div>
           <a href="#" className="text-xs hover:underline forgot-password">
             Forget Password?
@@ -85,6 +126,7 @@ const LoginForm = () => {
             <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md login-button">
               Login
             </button>
+            {emailPasswordError && <div className="form-message">{emailPasswordError}</div>}
           </div>
         </form>
 

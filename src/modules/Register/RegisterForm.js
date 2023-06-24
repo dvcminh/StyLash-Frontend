@@ -54,8 +54,6 @@ const RegisterForm = () => {
     
           const data = await response.json();
           registerData.avatar = data.secure_url;
-          console.log("data" + data)
-          console.log("data.secure_url" + data.secure_url);
         }
         catch (error) {
           console.log("error: " + error);
@@ -66,7 +64,7 @@ const RegisterForm = () => {
       const response = await AuthService.register(registerData);
       AuthService.setAccessToken(response.access_token);
       AuthService.setRefreshToken(response.refresh_token);
-      setError("Successfully registered");
+      alert("Register successfully!");
       navigate("/login");
     } catch (error) {
       setError(error.message);

@@ -16,13 +16,13 @@ const Hero = () => {
             <br className="hidden lg:inline-block" />
             <div class="scrolling-text scroller mb-5 mt-3">
               <span>
-              StyLash
+                Fashion
                 <br />
                 Beauty
                 <br />
                 Jewelry
                 <br />
-                Fashion
+                Style
               </span>
             </div>
           </h1>

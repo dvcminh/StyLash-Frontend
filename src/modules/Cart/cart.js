@@ -64,7 +64,7 @@ const Cart = () => {
     try {
       const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
       const formData = new FormData();
-      formData.append("totalAmount", (total + shippingFee).toFixed(2));
+      formData.append("totalAmount", ((total + shippingFee) * ((100 - voucher) / 100)).toFixed(2));
       formData.append("userId", userData.id);
       formData.append("shippingAddress", userData.address);
       formData.append("firstName", userData.firstname);
@@ -88,7 +88,9 @@ const Cart = () => {
         itemFormData.append("orderId", orderData);
         itemFormData.append("productId", item.id);
         itemFormData.append("quantity", item.quantity);
-        itemFormData.append("pricePerUnit", item.price);
+        itemFormData.append("pricePerUnit", item.price * item.quantity);
+        itemFormData.append("voucher", voucher !== undefined ? voucher : 0);
+        itemFormData.append("shipping", shippingFee !== undefined ? shippingFee : 10);
 
         const response = await axios.post(
           "http://localhost:8080/api/order_items/createItem",

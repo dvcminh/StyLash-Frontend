@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Footer from "./components/Footer";
-import Header from "./components/Header";
+import Header from "./components/Header/header";
 import Home from "./modules/Home/home";
 import { Routes, Route } from "react-router-dom";
 import Product from "./modules/Product/product";
@@ -16,6 +16,10 @@ import ProductImage from "./modules/Products/productImage";
 import { useState } from "react";
 import ProductImageUploader from "./modules/UploadProduct/ProductForm";
 import Sales from "./modules/Sales/sales";
+import Profile from "./modules/Profile/profile";
+import EditProfile from "./modules/EditProfile/editprofile";
+import Orders from "./modules/orders/orders";
+import OrderDetailPage from "./modules/OrderDetail/OrderDetail";
 
 function App() {
   const [product, setProduct] = useState(null);
@@ -90,6 +94,42 @@ function App() {
             <>
               <Header />
               <Sales />
+            </>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <>
+              <Header />
+              <Profile />
+            </>
+          }
+        />
+        <Route
+          path="/edit-profile"
+          element={
+            <>
+              <Header />
+              <EditProfile />
+            </>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <>
+              <Header />
+              <Orders />
+            </>
+          }
+        />
+        <Route
+          path="/api/v1/management/getOrderDetail/:id"
+          element={
+            <>
+              <Header />
+              <OrderDetailPage />
             </>
           }
         />

@@ -17,7 +17,7 @@ const ProductCard = ({ products }) => {
                   </a>
                   <div className="mt-4">
                     <h3 className="text-xs tracking-widest title-font mb-1 uppercase category">{product.category.name}</h3>
-                    <h2 className="title-font text-lg font-medium title">{product.name}</h2>
+                    <h2 className="title-font text-lg font-medium name">{product.name}</h2>
                     <p className="mt-1 text-md font-semibold price">${product.price}</p>
                   </div>
                 </Link>
