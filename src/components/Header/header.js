@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, UserCircle, Bird } from "phosphor-react";
+import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../Context/AuthContext";
+
+// import jwt from "jsonwebtoken";
 import axios from "axios";
+import { parseJwt } from "../misc/Helpers";
 
 import "./header.css";
+import AuthService from "../../Auth/AuthService";
 
 const navigations = [
   {
@@ -25,73 +31,17 @@ const navigations = [
 ];
 
 const Header = () => {
+  const authContext = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData")) || [];
 
-  // const refreshAccessToken = async (refreshToken) => {
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:8080/api/v1/auth/refresh-token",
-  //       null,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${refreshToken}`,
-  //         },
-  //       }
-  //     );
-  //     const accessToken  = response.data;
-  //     return accessToken;
-  //   } catch (error) {
-  //     throw new Error("Failed to refresh access token");
-  //   }};
+  useEffect(() => {
+    const checkUserLoggedIn = async () => {
+      await authContext.checkUserLoggedIn();
+    };
 
-  // Kiểm tra xem user đã login chưa
-  // const isUserLoggedIn = async () => {
-  //   const accessToken = localStorage.getItem("accessToken");
-  //   const refreshToken = localStorage.getItem("refreshToken");
-
-  //   if (!accessToken) {
-  //     return false;
-  //   }
-
-  //   try {
-  //     const decodedToken = jwt.verify(
-  //       accessToken,
-  //       "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"
-  //     ); // Giải mã access token
-
-  //     const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại (đơn vị giây)
-
-  //     if (decodedToken.exp < currentTime) {
-  //       if (!refreshToken) {
-  //         return false; // Không có refresh token, người dùng cần đăng nhập lại
-  //       }
-
-  //       try {
-  //         const newAccessToken = await refreshAccessToken(refreshToken); // Làm mới access token
-
-  //         // Lưu trữ access token mới
-  //         localStorage.setItem("accessToken", newAccessToken);
-
-  //         // Giải mã access token mới
-  //         const newDecodedToken = jwt.verify(newAccessToken, "your_secret_key");
-
-  //         // Kiểm tra thời hạn của access token mới
-  //         if (newDecodedToken.exp < currentTime) {
-  //           return false; // Thời hạn của access token mới đã hết hiệu lực
-  //         }
-
-  //         return true; // Người dùng đã đăng nhập và có access token mới
-  //       } catch (error) {
-  //         return false; // Lỗi khi làm mới access token
-  //       }
-  //     }
-
-  //     return true; // Người dùng đã đăng nhập và access token còn hiệu lực
-  //   } catch (error) {
-  //     return false; // Lỗi khi giải mã access token
-  //   }
-  // };
+    checkUserLoggedIn();
+  }, []);
 
   useEffect(() => {
     const navbar = document.querySelector("header");
@@ -147,44 +97,42 @@ const Header = () => {
           </button>
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
-              <Link
-                to="/profile"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              >
-                Profile
-              </Link>
-              <Link
-                to="/orders"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              >
-                Orders
-              </Link>
-              <Link
-                to="/invoices"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              >
-                Invoices
-              </Link>
-
-              <div className="border-t border-gray-300"></div>
-              <Link
-                to="/login"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              >
-                Log in
-              </Link>
-              <Link
-                to="/settings"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              >
-                Settings
-              </Link>
-              <Link
-                to="/logout"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              >
-                Log out
-              </Link>
+              {authContext.isLoggedIn ? (
+                <div>
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/invoices"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  >
+                    Invoices
+                  </Link>
+                  <Link
+                    to="/settings"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  >
+                    Settings
+                  </Link>
+                  <div className="border-t border-gray-300"></div>                  
+                  <Link
+                    onClick={authContext.logout} // Sửa thành userLogout
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  >
+                    Log out
+                  </Link>
+                </div>
+              ) : (
+                <Link
+                  to="/login" // Điều hướng đến trang đăng nhập
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                >
+                  Log in
+                </Link>
+              )}
             </div>
           )}
         </div>

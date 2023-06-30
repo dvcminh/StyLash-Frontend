@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AuthService from "../../Auth/AuthService";
 import { useNavigate, Link } from "react-router-dom";
 import { Bird } from "phosphor-react";
 import axios from "axios";
+import { AuthContext } from "../../components/Context/AuthContext";
 
 import "./LoginForm.css";
-import MessageBox from "../../components/MessageBox/MeassageBox";
-import { Alert } from "@material-tailwind/react";
 
 const LoginForm = () => {
+  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailPasswordError, setEmailPasswordError] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,13 +56,13 @@ const LoginForm = () => {
   
     try {
       const loginData = { email, password };
-      const response = await AuthService.login(loginData);
-      AuthService.setAccessToken(response.access_token);
-      AuthService.setRefreshToken(response.refresh_token);
+      const response = await authContext.login(loginData);
+      authContext.setAccessToken(response.access_token);
+      authContext.setRefreshToken(response.refresh_token);
 
-      const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
+      const accessToken = authContext.getAccessToken(); // Lấy token JWT từ localStorage
       try {
-        const response1 = await axios.get(
+        const response = await axios.get(
           "http://localhost:8080/api/v1/management/me",
           {
             headers: {
@@ -69,12 +70,18 @@ const LoginForm = () => {
             },
           }
         );
-        const data1 = response1.data;
-        localStorage.setItem("userData", JSON.stringify(data1));
+        const data = response.data;
+        localStorage.setItem("userData", JSON.stringify(data));
+
+        if (data.role === "ADMIN") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+        
       } catch (error) {
         console.log(error);   
       }
-      navigate("/");
     } catch (error) {
       setEmailPasswordError("Wrong password or email");
     }
