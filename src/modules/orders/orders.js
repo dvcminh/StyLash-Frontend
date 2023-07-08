@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 import AuthService from "../../Auth/AuthService";
 import "./orders.css";
 import Loading from "../Loading/loading";
+import { AuthContext } from "../../components/Context/AuthContext";
 import OrderItem from "../../components/OrderItemCard/OrderItem";
 
 const Orders = () => {
+  const authContext = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userData = JSON.parse(localStorage.getItem("userData")) || [];
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const accessToken = AuthService.getAccessToken();
+      const id = userData.id;
+      const accessToken = authContext.getAccessToken();
       const params = new URLSearchParams();
       params.append("userId", userData.id);
       params.append("shippingAddress", userData.address);
@@ -23,7 +26,7 @@ const Orders = () => {
       params.append("phoneNumber", userData.phoneNumber);
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/management/getOrders",
+          `http://localhost:8080/api/v1/management/getOrdersById/${id}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,

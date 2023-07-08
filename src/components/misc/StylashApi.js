@@ -1,103 +1,113 @@
-// import axios from 'axios'
+import axios from 'axios'
 // import { config } from '../../Constants'
-// import { parseJwt } from './Helpers'
+import { parseJwt } from './Helpers'
 
-// export const StylashApi = {
-//   authenticate,
-//   signup,
-//   numberOfUsers,
-//   numberOfOrders,
-//   getUsers,
-//   deleteUser,
-//   getOrders,
-//   deleteOrder,
-//   createOrder,
-//   getUserMe
-// }
+export const StylashApi = {
+  authenticate,
+  signup,
+  numberOfUsers,
+  numberOfOrders,
+  getUsers,
+  deleteUser,
+  getOrders,
+  deleteOrder,
+  createOrder,
+  getUserMe,
 
-// function authenticate(username, password) {
-//   return instance.post('/auth/authenticate', { username, password }, {
-//     headers: { 'Content-type': 'application/json' }
-//   })
-// }
+  getBarChatData,
+}
 
-// function signup(user) {
-//   return instance.post('/auth/signup', user, {
-//     headers: { 'Content-type': 'application/json' }
-//   })
-// }
+// -- Helper functions
 
-// function numberOfUsers() {
-//   return instance.get('/public/numberOfUsers')
-// }
+function bearerAuth() {
+    const accessToken = localStorage.getItem("accessToken");
+    return `Bearer ${accessToken}`
+}
 
-// function numberOfOrders() {
-//   return instance.get('/public/numberOfOrders')
-// }
+function getBarChatData() {
+    console.log("getBarChatData");
+  return instance.get('/daily-revenue', {
+    headers: { 'Authorization': bearerAuth() }
+  })
+}
 
-// function getUsers(user, username) {
-//   const url = username ? `/api/users/${username}` : '/api/users'
-//   return instance.get(url, {
-//     headers: { 'Authorization': bearerAuth(user) }
-//   })
-// }
+function authenticate(username, password) {
+  return instance.post('/auth/authenticate', { username, password }, {
+    headers: { 'Content-type': 'application/json' }
+  })
+}
 
-// function deleteUser(user, username) {
-//   return instance.delete(`/api/users/${username}`, {
-//     headers: { 'Authorization': bearerAuth(user) }
-//   })
-// }
+function signup(user) {
+  return instance.post('/auth/signup', user, {
+    headers: { 'Content-type': 'application/json' }
+  })
+}
 
-// function getOrders(user, text) {
-//   const url = text ? `/api/orders?text=${text}` : '/api/orders'
-//   return instance.get(url, {
-//     headers: { 'Authorization': bearerAuth(user) }
-//   })
-// }
+function numberOfUsers() {
+  return instance.get('/public/numberOfUsers')
+}
 
-// function deleteOrder(user, orderId) {
-//   return instance.delete(`/api/orders/${orderId}`, {
-//     headers: { 'Authorization': bearerAuth(user) }
-//   })
-// }
+function numberOfOrders() {
+  return instance.get('/public/numberOfOrders')
+}
 
-// function createOrder(user, order) {
-//   return instance.post('/api/orders', order, {
-//     headers: {
-//       'Content-type': 'application/json',
-//       'Authorization': bearerAuth(user)
-//     }
-//   })
-// }
+function getUsers(user, username) {
+  const url = username ? `/api/users/${username}` : '/api/users'
+  return instance.get(url, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
 
-// function getUserMe(user) {
-//   return instance.get('/api/users/me', {
-//     headers: { 'Authorization': bearerAuth(user) }
-//   })
-// }
+function deleteUser(user, username) {
+  return instance.delete(`/api/users/${username}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
 
-// // -- Axios
+function getOrders(user, text) {
+  const url = text ? `/api/orders?text=${text}` : '/api/orders'
+  return instance.get(url, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
 
-// const instance = axios.create({
-//   baseURL: config.url.API_BASE_URL
-// })
+function deleteOrder(user, orderId) {
+  return instance.delete(`/api/orders/${orderId}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
 
-// instance.interceptors.request.use(function (config) {
-//   // If token is expired, redirect user to login
-//   if (config.headers.Authorization) {
-//     const token = config.headers.Authorization.split(' ')[1]
-//     const data = parseJwt(token)
-//     if (Date.now() > data.exp * 1000) {
-//       window.location.href = "/login"
-//     }
-//   }
-//   return config
-// }, function (error) {
-//   return Promise.reject(error)
-// })
+function createOrder(user, order) {
+  return instance.post('/api/orders', order, {
+    headers: {
+      'Content-type': 'application/json',
+      'Authorization': bearerAuth(user)
+    }
+  })
+}
 
-// // -- Helper functions
+function getUserMe(user) {
+  return instance.get('/api/users/me', {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
 
-// function bearerAuth(user) {
-//   return `Bearer ${user.accessToken}`
-// }
+// -- Axios
+
+const instance = axios.create({
+  baseURL: "http://localhost:8080/api/v1/admin"
+})
+
+instance.interceptors.request.use(function (config) {
+  // If token is expired, redirect user to login
+  if (config.headers.Authorization) {
+    const token = config.headers.Authorization.split(' ')[1]
+    const data = parseJwt(token)
+    if (Date.now() > data.exp * 1000) {
+      window.location.href = "/login"
+    }
+  }
+  return config
+}, function (error) {
+  return Promise.reject(error)
+})

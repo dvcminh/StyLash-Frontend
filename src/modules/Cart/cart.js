@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import FormData from "form-data";
-
+import { AuthContext } from "../../components/Context/AuthContext";
 import AuthService from "../../Auth/AuthService";
+import { NotificationContext } from "../../components/Context/NotificationContext";
+import empty_cart from "../../assets/empty_cart.png";
 
 import "./cart.css";
 
 const Cart = () => {
+  const authContext = useContext(AuthContext);
+  const { setNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
   const [cart, setCart] = useState([]);
@@ -39,7 +43,7 @@ const Cart = () => {
 
   const handleCheckVoucher = async () => {
     try {
-      const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
+      const accessToken = authContext.getAccessToken(); // Lấy token JWT từ localStorage
       const formData = new FormData();
       formData.append("voucherCode", voucherCode);
 
@@ -62,9 +66,12 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     try {
-      const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
+      const accessToken = authContext.getAccessToken(); // Lấy token JWT từ localStorage
       const formData = new FormData();
-      formData.append("totalAmount", ((total + shippingFee) * ((100 - voucher) / 100)).toFixed(2));
+      formData.append(
+        "totalAmount",
+        ((total + shippingFee) * ((100 - voucher) / 100)).toFixed(2)
+      );
       formData.append("userId", userData.id);
       formData.append("shippingAddress", userData.address);
       formData.append("firstName", userData.firstname);
@@ -83,14 +90,24 @@ const Cart = () => {
       );
       const orderData = orderResponse.data;
 
+      carts.map((item) => {
+        console.log(item.size); // Kiểm tra giá trị của item.size
+        // ...
+      });
+
       const createItemPromises = carts.map(async (item) => {
         const itemFormData = new FormData();
         itemFormData.append("orderId", orderData);
         itemFormData.append("productId", item.id);
         itemFormData.append("quantity", item.quantity);
         itemFormData.append("pricePerUnit", item.price * item.quantity);
+        itemFormData.append("size", item.size);
+        itemFormData.append("color", item.color);
         itemFormData.append("voucher", voucher !== undefined ? voucher : 0);
-        itemFormData.append("shipping", shippingFee !== undefined ? shippingFee : 10);
+        itemFormData.append(
+          "shipping",
+          shippingFee !== undefined ? shippingFee : 10
+        );
 
         const response = await axios.post(
           "http://localhost:8080/api/order_items/createItem",
@@ -106,17 +123,16 @@ const Cart = () => {
 
       await Promise.all(createItemPromises);
 
-      // Hiển thị thông báo thành công sau khi tất cả các yêu cầu đã hoàn thành
-      alert(
-        "Đơn hàng được tạo thành công! Cảm ơn bạn đã mua hàng tại Stylash!"
-      );
+      setNotification({
+        message: "Order created successfully",
+        position: "top-right",
+      });
     } catch (error) {
       console.error("Error creating order:", error);
       // Xử lý lỗi tại đây, ví dụ: hiển thị thông báo lỗi
     }
 
     localStorage.removeItem("cart");
-    navigate("/");
   };
 
   const handleInc = (id) => {
@@ -160,8 +176,14 @@ const Cart = () => {
 
   if (carts.length === 0) {
     return (
-      <div className=" h-[55vh] flex justify-center items-center text-4xl ">
-        Cart is Empty
+      <div className=" h-[55vh] flex justify-center items-center text-4xl flex flex-col mt-20">
+        <div>
+          <h3 className="text-white">Cart is Empty</h3>
+        </div>
+
+        <div className="mt-10">
+          <img src={empty_cart} alt="Animated GIF" />
+        </div>
       </div>
     );
   }
@@ -198,6 +220,12 @@ const Cart = () => {
             </h3>
             <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
               Price
+            </h3>
+            <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
+              Color
+            </h3>
+            <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
+              Size
             </h3>
             <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
               Total
@@ -255,6 +283,12 @@ const Cart = () => {
                 </div>
                 <span className="text-center w-1/5 font-semibold text-sm">
                   ${cart?.price}
+                </span>
+                <span className="text-center w-1/5 font-semibold text-sm">
+                  {cart?.color}
+                </span>
+                <span className="text-center w-1/5 font-semibold text-sm">
+                  {cart?.size}
                 </span>
                 <span className="text-center w-1/5 font-semibold text-sm">
                   ${cart?.price * cart?.quantity}

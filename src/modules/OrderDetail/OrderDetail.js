@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import OrderDetail from "../../components/OrderDetailCard/OrderDetail";
 import Loading from "../Loading/loading";
 import AuthService from "../../Auth/AuthService";
 import { useParams } from "react-router-dom";
-
+import { AuthContext } from "../../components/Context/AuthContext";
 const OrderDetailPage = () => {
+  const authContext = useContext(AuthContext);
   const [order, setOrder] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
+        const accessToken = authContext.getAccessToken();
         const response = await axios.get(
           `http://localhost:8080/api/v1/management/getOrderDetail/${id}`, {
             headers: {

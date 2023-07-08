@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { face } from "phosphor-react";
 import axios from "axios";
 import AuthService from "../../Auth/AuthService";
+import { AuthContext } from "../../components/Context/AuthContext";
 import Loading from "../Loading/loading";
 
 import "./product.css";
 
 const Product = () => {
+  const authContext = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [heartColor, setHeartColor] = useState("gray");
   const [liked, setLiked] = useState(false);
-  const [color, setColor] = useState();
+  const [hearthColor, setHearthColor] = useState();
+  const [color, setColor] = useState("black");
+  const [size, setSize] = useState("SM");
   const [countLike, setCountLike] = useState(0);
 
   //hàm mới vô load để xem người dùng đã like sản phẩm hay chưa
   useEffect(() => {
     const fetchLikeProduct = async () => {
       try {
-        const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
+        const accessToken = authContext.getAccessToken(); // Lấy token JWT từ localStorage
         const response = await axios.get(
           `http://localhost:8080/api/products/checkLikedProduct`,
           {
@@ -31,7 +35,7 @@ const Product = () => {
               Authorization: `Bearer ${accessToken}`,
             },
           }
-        );        
+        );
         const data = response.data;
         console.log(data);
         setLiked(data);
@@ -47,7 +51,7 @@ const Product = () => {
   //     try {
   //       const response = await axios.get(
   //         `http://localhost:8080/api/products/countLike/${id}`
-  //       );        
+  //       );
   //       const data = response.data;
   //       setCountLike(data);
   //     } catch (error) {
@@ -58,18 +62,19 @@ const Product = () => {
   // }, [liked]);
 
   useEffect(() => {
-    setColor(liked ? "#00ADB5" : "gray");
+    setHearthColor(liked ? "#00ADB5" : "gray");
   }, [liked]);
 
   const handleClick = async () => {
     try {
       const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
       const response = await axios.post(
-        `http://localhost:8080/api/products/${id}`, null,
+        `http://localhost:8080/api/products/${id}`,
+        null,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-          }
+          },
         }
       );
       const data = response.data;
@@ -93,7 +98,7 @@ const Product = () => {
 
     const fetchProducts = async () => {
       try {
-        const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
+        const accessToken = authContext.getAccessToken(); // Lấy token JWT từ localStorage
         const response = await axios.get(
           `http://localhost:8080/api/products/${id}`
         );
@@ -106,10 +111,17 @@ const Product = () => {
 
   const handleCart = (product, redirect) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const isProductExist = cart.find((item) => item.id === product.id);
+    const isProductExist = cart.find(
+      (item) =>
+        item.id === product.id && item.color === color && item.size === size
+    );
     if (isProductExist) {
       const updatedCart = cart.map((item) => {
-        if (item.id === product.id) {
+        if (
+          item.id === product.id &&
+          item.color === color &&
+          item.size === size
+        ) {
           return {
             ...item,
             quantity: item.quantity + 1,
@@ -121,7 +133,7 @@ const Product = () => {
     } else {
       localStorage.setItem(
         "cart",
-        JSON.stringify([...cart, { ...product, quantity: 1 }])
+        JSON.stringify([...cart, { ...product, quantity: 1, color, size }])
       );
     }
     alert("Product added to cart");
@@ -214,16 +226,22 @@ const Product = () => {
             <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
               <div className="flex">
                 <span className="mr-3">Color</span>
-                <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>
-                <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
+                <button
+                  className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"
+                  onClick={() => setColor("Black")}
+                ></button>
+                <button
+                  className="border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"
+                  onClick={() => setColor("White")}
+                ></button>
                 <button className="border-2 border-gray-300 ml-1 bg-indigo-500 rounded-full w-6 h-6 focus:outline-none"></button>
               </div>
               <div className="flex ml-6 items-center">
                 <span className="mr-3">Size</span>
                 <div className="relative">
                   <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
-                    <option>SM</option>
-                    <option>M</option>
+                    <option onClick={() => setSize("SM")}>SM</option>
+                    <option onClick={() => setSize("M")}>M</option>
                     <option>L</option>
                     <option>XL</option>
                   </select>
@@ -268,7 +286,7 @@ const Product = () => {
                 onClick={handleClick}
               >
                 <svg
-                  fill={color}
+                  fill={hearthColor}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
@@ -277,7 +295,7 @@ const Product = () => {
                 >
                   <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
                 </svg>
-              </button>              
+              </button>
             </div>
           </div>
         </div>

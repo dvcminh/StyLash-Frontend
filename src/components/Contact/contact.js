@@ -1,6 +1,100 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { Cloudinary } from "cloudinary-core";
+import { useDropzone } from "react-dropzone";
+import { AuthContext } from "../Context/AuthContext";
+import { NotificationContext } from "../Context/NotificationContext";
+
+const cloudinary = new Cloudinary({
+  cloud_name: "djxszgsln",
+  api_key: "925724911559638",
+  api_secret: "SvVdpKQunbpo-AmdQQ-81JNqXUw",
+});
 
 export const Contact = () => {
+  const { setNotification } = useContext(NotificationContext);
+  const authContext = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [avatar, setAvatar] = useState(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState();
+  const userData = JSON.parse(localStorage.getItem("userData")) || [];
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value);
+  };
+
+  const handleAvatarDrop = (acceptedFiles) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setAvatar(acceptedFiles[0]);
+    }
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: handleAvatarDrop,
+    accept: "image/*",
+    multiple: false,
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const itemFormData = new FormData();
+      itemFormData.append("title", title);
+      itemFormData.append("description", description);
+      itemFormData.append("username", userData.email);
+
+      if (avatar) {
+        try {
+          const formData = new FormData();
+          formData.append("file", avatar);
+          formData.append("upload_preset", "tu408cqj");
+
+          const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${
+              cloudinary.config().cloud_name
+            }/upload`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          const data = await response.json();
+          itemFormData.append("avatar", data.secure_url);
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
+
+      const accessToken = authContext.getAccessToken();
+      const response = await axios.post(
+        `http://localhost:8080/api/v1/management/createReport`,
+        itemFormData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setNotification({
+        message: "Create report successfully!",
+        position: "top-right",
+      });
+    } catch (error) {
+      setNotification({
+        message: "Create report failed!",
+        position: "top-right",
+      });
+    }
+  };
+
   return (
     <>
       <section className="text-gray-600 body-font relative">
@@ -23,35 +117,70 @@ export const Contact = () => {
               Feedback
             </h2>
             <p className="leading-relaxed mb-5 text-gray-600">
-              Post-ironic portland shabby chic echo park, banjo fashion axe
+              Write your feedback here
             </p>
-            <div className="relative mb-4">
-              <label for="email" className="leading-7 text-sm text-gray-600">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              />
-            </div>
-            <div className="relative mb-4">
-              <label for="message" className="leading-7 text-sm text-gray-600">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-              ></textarea>
-            </div>
-            <button className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-              Button
-            </button>
+            <form onSubmit={handleSubmit}>
+              <div className="mt-4">
+                <label
+                  htmlFor="avatar"
+                  className="block text-sm font-medium text-gray-700 undefined"
+                >
+                  Image
+                </label>
+
+                <div
+                  {...getRootProps()}
+                  className={`flex flex-col items-start border-2 border-dashed rounded-md px-4 py-2 mt-2 ${
+                    isDragActive ? "border-purple-400" : "border-gray-400"
+                  }`}
+                >
+                  <input {...getInputProps()} />
+                  {avatar ? (
+                    <img
+                      src={URL.createObjectURL(avatar)}
+                      alt="Avatar"
+                      className="w-24 h-24 object-cover rounded-full"
+                    />
+                  ) : (
+                    <p>Drag and drop an image here or click to select</p>
+                  )}
+                </div>
+              </div>
+              <div className="relative mb-4">
+                <label for="title" className="leading-7 text-sm text-gray-600">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                />
+              </div>
+              <div className="relative mb-4">
+                <label
+                  for="description"
+                  className="leading-7 text-sm text-gray-600"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                ></textarea>
+              </div>
+              <button type="submit" className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                Button
+              </button>
+            </form>
+
             <p className="text-xs text-gray-500 mt-3">
-              Chicharrones blog helvetica normcore iceland tousled brook viral
-              artisan.
+              Thanks for your feedback
             </p>
           </div>
         </div>

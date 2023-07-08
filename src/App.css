@@ -6,3 +6,12 @@
   flex-direction: column;
   scroll-behavior: smooth;
 }
+
+.chart-container {
+  display: flex;
+}
+
+.chart-item {
+  width: 100%;
+  height: 100%;
+}

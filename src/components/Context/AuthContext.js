@@ -10,7 +10,7 @@ export const AuthContext = createContext("");
 
 export const AuthProvider = ({ children }) => {
   const { setNotification } = useContext(NotificationContext);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   useEffect(() => {
     checkUserLoggedIn();
@@ -83,19 +83,23 @@ export const AuthProvider = ({ children }) => {
   };
 
   const refreshAccessToken = async (refreshToken) => {
+    console.log("refreshAccessToken" + refreshToken);
     try {
-      const response = await axios.post(`${API_URL}/refresh-token`, null, {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      });
+      const response = await axios.post(
+        `${API_URL}/refresh-token`,
+        {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        }
+      );
       const accessToken = response.data.access_token;
       return accessToken;
     } catch (error) {
       console.log("loi refreshAccessToken");
-      throw new Error("Failed to refresh access token");
     }
   };
+  
 
   const checkUserLoggedIn = async () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -103,6 +107,7 @@ export const AuthProvider = ({ children }) => {
 
     if (!accessToken) {
       setIsLoggedIn(false);
+      console.log("người dùng không có accesstoken")
       return;
     }
 
@@ -119,6 +124,7 @@ export const AuthProvider = ({ children }) => {
             position: 'top-right'
           });
           setIsLoggedIn(false);
+          console.log("người dùng không có refreshtoken")
           return;
         }
 
@@ -139,10 +145,12 @@ export const AuthProvider = ({ children }) => {
               position: 'top-right'
             });
             setIsLoggedIn(false); // Thời hạn của access token mới đã hết hiệu lực
+            console.log("thời hạn của access token mới đã hết hiệu lực")
             return;
           }
 
           setIsLoggedIn(true); // Người dùng đã đăng nhập và có access token mới
+          console.log("Người dùng đã đăng nhập và có access token mới")
         } catch (error) {
           setNotification({
             message: 'Your session has expired, please login again!',
@@ -150,10 +158,12 @@ export const AuthProvider = ({ children }) => {
           });
           logout();
           setIsLoggedIn(false); // Lỗi khi làm mới access token
+          console.log("Lỗi khi làm mới access token")
           return;
         }
       } else {
         setIsLoggedIn(true); // Người dùng đã đăng nhập và access token còn hiệu lực
+        console.log("Người dùng đã đăng nhập và access token còn hiệu lực")
       }
     } catch (error) {
       setIsLoggedIn(false); // Lỗi khi giải mã access token
