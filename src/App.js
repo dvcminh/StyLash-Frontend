@@ -43,6 +43,9 @@ import UpdateVoucherForm from "./components/Admin/UpdateVoucherForm";
 import AddVoucherForm from "./components/Admin/AddVoucherForm";
 import Likes from "./components/Admin/Like";
 import Report from "./components/Admin/Report";
+import { ChangePassword } from "./components/ChangePassword/ChangePassword";
+import { Management } from "./components/Admin/Management";
+import Wishlist from "./components/Wishlist/Wishlist";
 
 function App() {
   const [userData, setUserData] = useState({
@@ -99,6 +102,16 @@ function App() {
               }
             />
             <Route
+              path="/changePassword"
+              element={
+                <>
+                  <Header />
+                  <ChangePassword />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
               path="/categories/:name"
               element={
                 <>
@@ -141,6 +154,17 @@ function App() {
                 <PrivateRoute>
                   <Header />
                   <Profile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/wishlist"
+              element={
+                <PrivateRoute>
+                  <Header />
+                  <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
+                    <Wishlist />
+                  </section>
                 </PrivateRoute>
               }
             />
@@ -339,6 +363,17 @@ function App() {
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <Report />
+                  </section>
+                </>
+              }
+            />
+            <Route
+              path="/admin/management"
+              element={
+                <>
+                  <Sidebar />
+                  <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
+                    <Management />
                   </section>
                 </>
               }

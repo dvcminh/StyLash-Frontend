@@ -1,12 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { NotificationContext } from "../Context/NotificationContext";
 
 import "./salescard.css";
 
 export const SalesCard = ({ vouchers }) => {
+  const { setNotification } = React.useContext(NotificationContext);
   const copyCode = (code) => {
     navigator.clipboard.writeText(code);
-    alert("Copied to clipboard")
+    setNotification({
+      message: "Copied to clipboard!",
+      position: "top-right",
+    });
   };
 
   return (

@@ -123,17 +123,9 @@ export default function Sidebar() {
                   <Link to="/admin/dashboard">
                     <ListItem>
                       <ListItemPrefix>
-                        <BiSolidAnalyse strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Analytics
-                    </ListItem>
-                  </Link>
-                  <Link to="/admin/reporting">
-                    <ListItem>
-                      <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Reporting
+                      Analytics
                     </ListItem>
                   </Link>
                   <Link to="/admin/management">
@@ -141,7 +133,7 @@ export default function Sidebar() {
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Projects
+                      Management
                     </ListItem>
                   </Link>
                 </List>
@@ -176,7 +168,7 @@ export default function Sidebar() {
                   <Link to="/admin/Products">
                     <ListItem>
                       <ListItemPrefix>
-                        <CubeTransparentIcon
+                        <ChevronRightIcon
                           strokeWidth={3}
                           className="h-3 w-5"
                         />
@@ -187,7 +179,7 @@ export default function Sidebar() {
                   <Link to="/admin/addProduct">
                     <ListItem>
                       <ListItemPrefix>
-                        <PlusIcon strokeWidth={3} className="h-3 w-5" />
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
                       Add Products
                     </ListItem>
@@ -224,7 +216,7 @@ export default function Sidebar() {
                   <Link to="/admin/orders">
                     <ListItem>
                       <ListItemPrefix>
-                        <FaJediOrder strokeWidth={3} className="h-3 w-5" />
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
                       Manage Orders
                     </ListItem>
@@ -261,7 +253,7 @@ export default function Sidebar() {
                   <Link to="/admin/customers">
                     <ListItem>
                       <ListItemPrefix>
-                        <HiOutlineUser strokeWidth={3} className="h-3 w-5" />
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
                       Manage Customers
                     </ListItem>
@@ -300,7 +292,7 @@ export default function Sidebar() {
                   <Link to="/admin/category">
                     <ListItem>
                       <ListItemPrefix>
-                        <MdOutlineCategory
+                        <ChevronRightIcon
                           strokeWidth={3}
                           className="h-3 w-5"
                         />
@@ -311,7 +303,7 @@ export default function Sidebar() {
                   <Link to="/admin/addCategory">
                     <ListItem>
                       <ListItemPrefix>
-                        <PlusIcon strokeWidth={3} className="h-3 w-5" />
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
                       Add Category
                     </ListItem>
@@ -349,7 +341,7 @@ export default function Sidebar() {
                   <Link to="/admin/voucher">
                     <ListItem>
                       <ListItemPrefix>
-                        <MdOutlineCategory
+                        <ChevronRightIcon
                           strokeWidth={3}
                           className="h-3 w-5"
                         />
@@ -360,7 +352,7 @@ export default function Sidebar() {
                   <Link to="/admin/addVoucher">
                     <ListItem>
                       <ListItemPrefix>
-                        <PlusIcon strokeWidth={3} className="h-3 w-5" />
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
                       Add Voucher
                     </ListItem>
@@ -399,7 +391,7 @@ export default function Sidebar() {
                   <Link to="/admin/likes">
                     <ListItem>
                       <ListItemPrefix>
-                        <BiLike
+                        <ChevronRightIcon
                           strokeWidth={3}
                           className="h-3 w-5"
                         />
@@ -448,12 +440,12 @@ export default function Sidebar() {
                   <Link to="/admin/reports">
                     <ListItem>
                       <ListItemPrefix>
-                        <MdReportProblem
+                        <ChevronRightIcon
                           strokeWidth={3}
                           className="h-3 w-5"
                         />
                       </ListItemPrefix>
-                      Manage Likes
+                      Manage Reports
                     </ListItem>
                   </Link>
                   {/* <Link to="/admin/addVoucher">
@@ -468,27 +460,6 @@ export default function Sidebar() {
               </AccordionBody>
             </Accordion>
             <hr className="my-2 border-blue-gray-50" />
-            <ListItem>
-              <ListItemPrefix>
-                <InboxIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Inbox
-              <ListItemSuffix>
-                <Chip
-                  value="14"
-                  size="sm"
-                  variant="ghost"
-                  color="blue-gray"
-                  className="rounded-full"
-                />
-              </ListItemSuffix>
-            </ListItem>
-            <ListItem>
-              <ListItemPrefix>
-                <UserCircleIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Profile
-            </ListItem>
             <ListItem>
               <ListItemPrefix>
                 <Cog6ToothIcon className="h-5 w-5" />

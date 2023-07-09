@@ -7,11 +7,11 @@ const ProductCard = ({ products }) => {
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">
-        <div className="flex flex-wrap -m-4">
+        <div className="flex flex-wrap -m-4 ">
           {
             products.map((product) => {
               return (
-                <Link key={product.id} to={`/api/products/${product.id}`} className="lg:w-[23%] md:w-1/2 p-4 w-full mb-4 cursor-pointer rounded-lg shadow ml-4 contain">
+                <Link key={product.id} to={`/api/products/${product.id}`} className="lg:w-[23%] md:w-1/2 p-4 w-full mb-4 cursor-pointer rounded-lg shadow ml-4 contain hover:shadow-lg hover:scale-105 transition-all ease-in-out duration-300">
                   <a className="block relative h-48 rounded overflow-hidden">
                     <img alt="picture" className=" object-contain object-center w-full h-full block" src={product.image_url} />
                   </a>

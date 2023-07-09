@@ -60,7 +60,7 @@ const UpdateProductForm = () => {
       } catch (error) {}
     };
       fetchProducts();
-}, [product]);
+}, []);
 
 
   useEffect(() => {

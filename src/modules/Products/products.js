@@ -9,16 +9,13 @@ import "./products.css";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [sortOrder, setSortOrder] = useState("");
+  const [sortOrder, setSortOrder] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSortAscending = () => {
-    setSortOrder("asc");
+  const handleSort = (sort) => {
+    setSortOrder(sort);
   };
 
-  const handleSortDescending = () => {
-    setSortOrder("desc");
-  };
 
   const fetchProducts = async () => {
     try {
@@ -94,14 +91,20 @@ const Products = () => {
         </form>
         <div className="flex justify-center mt-4">
           <button
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2"
-            onClick={handleSortAscending}
+            className="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-gray-700 active:bg-gray-900"
+            onClick={() => handleSort("all")}
+          >
+            All
+          </button>
+          <button
+            className="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-gray-700 active:bg-gray-900"
+            onClick={() => handleSort("asc")}
           >
             Sort A-Z
           </button>
           <button
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-            onClick={handleSortDescending}
+            className="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-gray-700 active:bg-gray-900"
+            onClick={() => handleSort("desc")}
           >
             Sort Z-A
           </button>

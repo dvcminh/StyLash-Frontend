@@ -106,7 +106,7 @@ export const UpdateCategoryForm = () => {
               type="submit"
               className="w-full px-4 py-2 mt-4 text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
             >
-              Update Product
+              Update Category
             </button>     
           </form>
         </div>

@@ -58,9 +58,22 @@ const Cart = () => {
       );
       const voucherValue = voucherResponse.data;
       setVoucher(voucherValue);
+      {voucherValue === 0 ? setNotification({
+        isOpen: true,
+        message: "Invalid voucher code!",
+        type: "error",
+      }) : setNotification({
+        isOpen: true,
+        message: "Voucher code applied!",
+        type: "error",
+      });}
+
     } catch (error) {
-      console.error("Error checking voucher:", error);
-      // Xử lý lỗi tại đây, ví dụ: hiển thị thông báo lỗi
+      setNotification({
+        isOpen: true,
+        message: "Invalid voucher code!",
+        type: "error",
+      });
     }
   };
 

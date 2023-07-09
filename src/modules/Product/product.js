@@ -5,46 +5,75 @@ import axios from "axios";
 import AuthService from "../../Auth/AuthService";
 import { AuthContext } from "../../components/Context/AuthContext";
 import Loading from "../Loading/loading";
+import { NotificationContext } from "../../components/Context/NotificationContext";
 
 import "./product.css";
 
 const Product = () => {
   const authContext = useContext(AuthContext);
+  const { setNotification } = useContext(NotificationContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [heartColor, setHeartColor] = useState("gray");
   const [liked, setLiked] = useState(false);
   const [hearthColor, setHearthColor] = useState();
-  const [color, setColor] = useState("black");
+  const [color, setColor] = useState("Black");
   const [size, setSize] = useState("SM");
   const [countLike, setCountLike] = useState(0);
+  const [isBlackClicked, setIsBlackClicked] = useState(true);
+  const [isWhiteClicked, setIsWhiteClicked] = useState(false);
+
+  const handleBlackClick = () => {
+    setIsBlackClicked(true);
+    setIsWhiteClicked(false);
+    setColor("Black");
+  };
+
+  const handleWhiteClick = () => {
+    setIsBlackClicked(false);
+    setIsWhiteClicked(true);
+    setColor("White");
+  };
+
+  const loadLikeProduct = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/products/countLike/${id}`
+      );
+      const data = response.data;
+      setCountLike(data);
+    } catch (error) {
+      alert(error);
+    }
+  };
+  const fetchLikeProduct = async () => {
+    try {
+      const accessToken = authContext.getAccessToken(); // Lấy token JWT từ localStorage
+      const response = await axios.get(
+        `http://localhost:8080/api/products/checkLikedProduct`,
+        {
+          params: {
+            productId: id,
+          },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data);
+      setLiked(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //hàm mới vô load để xem người dùng đã like sản phẩm hay chưa
   useEffect(() => {
-    const fetchLikeProduct = async () => {
-      try {
-        const accessToken = authContext.getAccessToken(); // Lấy token JWT từ localStorage
-        const response = await axios.get(
-          `http://localhost:8080/api/products/checkLikedProduct`,
-          {
-            params: {
-              productId: id,
-            },
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const data = response.data;
-        console.log(data);
-        setLiked(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchLikeProduct();
-  }, []);
+    loadLikeProduct();
+  }, [liked]);
 
   // useEffect(() => {
   //   const fetchLikeProduct = async () => {
@@ -80,9 +109,17 @@ const Product = () => {
       const data = response.data;
       setLiked(data);
       if (data) {
-        alert("Đã thêm vào danh sách yêu thích");
+        setNotification({
+          isOpen: true,
+          message: "Added to wishlist",
+          type: "success",
+        });
       } else {
-        alert("Đã xóa khỏi danh sách yêu thích");
+        setNotification({
+          isOpen: true,
+          message: "Removed from wishlist",
+          type: "error",
+        });
       }
     } catch (error) {}
   };
@@ -163,61 +200,6 @@ const Product = () => {
             </h1>
             <div className="flex mb-4">
               <span className="flex items-center">
-                <svg
-                  fill="currentColor"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  className="w-4 h-4 icon"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <svg
-                  fill="currentColor"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  className="w-4 h-4 icon"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <svg
-                  fill="currentColor"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  className="w-4 h-4 icon"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <svg
-                  fill="currentColor"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  className="w-4 h-4 icon"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  className="w-4 h-4 icon"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
                 <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2s" />
                 <span className="text">{countLike} Likes</span>
               </span>
@@ -227,14 +209,17 @@ const Product = () => {
               <div className="flex">
                 <span className="mr-3">Color</span>
                 <button
-                  className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"
-                  onClick={() => setColor("Black")}
+                  className={`border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none ${
+                    isBlackClicked ? "border-2 border-sky-500" : "button-black"
+                  }`}
+                  onClick={handleBlackClick}
                 ></button>
                 <button
-                  className="border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"
-                  onClick={() => setColor("White")}
+                  className={`border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none ${
+                    isWhiteClicked ? "border-2 border-sky-500" : "button-white"
+                  }`}
+                  onClick={handleWhiteClick}
                 ></button>
-                <button className="border-2 border-gray-300 ml-1 bg-indigo-500 rounded-full w-6 h-6 focus:outline-none"></button>
               </div>
               <div className="flex ml-6 items-center">
                 <span className="mr-3">Size</span>

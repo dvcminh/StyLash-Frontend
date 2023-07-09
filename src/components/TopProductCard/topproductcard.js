@@ -11,7 +11,7 @@ const TopProductCard = ({ products }) => {
           {
             products.map((product, index) => {
               return (
-                <Link key={product.id} to={`/api/products/${product.id}`} className="lg:w-[23%] md:w-1/2 p-4 w-full mb-4 cursor-pointer rounded-lg shadow ml-4 contain">
+                <Link key={product.id} to={`/api/products/${product.id}`} className="lg:w-[23%] md:w-1/2 p-4 w-full mb-4 cursor-pointer rounded-lg shadow ml-4 contain hover:shadow-lg hover:scale-105 transition-all ease-in-out duration-300">
                 <div className="flex flex-col items-center m-4">
                   {index === 0 && <Crown size={60} weight="fill" color="#FFD700" />}
                   {index === 0 && <p className="text-xs text-gray-500">Best Seller</p>}
