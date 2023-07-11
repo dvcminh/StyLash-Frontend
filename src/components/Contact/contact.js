@@ -44,6 +44,15 @@ export const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (authContext.isLoggedIn === false) {
+      setNotification({
+        isOpen: true,
+        message: "Please login to continue",
+        type: "error",
+      });
+      return;
+    }
     try {
       const itemFormData = new FormData();
       itemFormData.append("title", title);
@@ -175,7 +184,7 @@ export const Contact = () => {
                 ></textarea>
               </div>
               <button type="submit" className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                Button
+                Submit
               </button>
             </form>
 

@@ -19,8 +19,8 @@ const OrderDetail = ({ items }) => {
               />
               <div>
                 <h3 className="mt-0 mx-0 text-xl">{item.product.name}</h3>
-                <div className="italic">Quantity: {item.quantity}</div>
-                <div className="mt-3 font-bold text-2xl text-yellow-550">
+                <div className="italic mt-1">Quantity: {item.quantity}</div>
+                <div className="mt-4 text-xl">
                   ${item.pricePerUnit}
                 </div>
               </div>
@@ -33,9 +33,9 @@ const OrderDetail = ({ items }) => {
       {/* Display voucherValue and shippingValue */}
       <div className="flex justify-end">
         <div className="mr-6">
-          <p>Voucher Value: {voucherValue}%</p>
-          <p>Shipping Value: ${shippingValue}</p>
-          <p>Subtotal: ${total.toFixed(2)}</p>  
+          <p className="font-bold">Voucher Value: {voucherValue}%</p>
+          <p className="font-bold">Shipping Value: ${shippingValue}</p>
+          <p className="font-bold">Subtotal: ${total.toFixed(2)}</p>  
         </div>
       </div>
     </div>

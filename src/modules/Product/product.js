@@ -95,6 +95,14 @@ const Product = () => {
   }, [liked]);
 
   const handleClick = async () => {
+    if (authContext.isLoggedIn === false) {
+      setNotification({
+        isOpen: true,
+        message: "Please login to continue",
+        type: "error",
+      });
+      return;
+    }
     try {
       const accessToken = AuthService.getAccessToken(); // Lấy token JWT từ localStorage
       const response = await axios.post(
@@ -147,6 +155,14 @@ const Product = () => {
   }, []);
 
   const handleCart = (product, redirect) => {
+    if (authContext.isLoggedIn === false) {
+      setNotification({
+        isOpen: true,
+        message: "Please login to continue",
+        type: "error",
+      });
+      return;
+    }
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const isProductExist = cart.find(
       (item) =>
@@ -173,7 +189,11 @@ const Product = () => {
         JSON.stringify([...cart, { ...product, quantity: 1, color, size }])
       );
     }
-    alert("Product added to cart");
+    setNotification({
+      isOpen: true,
+      message: "Added to cart",
+      type: "success",
+    });
     if (redirect) {
       navigate("/cart");
     }

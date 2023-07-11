@@ -5,7 +5,7 @@ import FormData from "form-data";
 import { AuthContext } from "../../components/Context/AuthContext";
 import AuthService from "../../Auth/AuthService";
 import { NotificationContext } from "../../components/Context/NotificationContext";
-import empty_cart from "../../assets/empty_cart.png";
+import emptyCart from "../../assets/cart.png";
 
 import "./cart.css";
 
@@ -195,7 +195,7 @@ const Cart = () => {
         </div>
 
         <div className="mt-10">
-          <img src={empty_cart} alt="Animated GIF" />
+          <img src={emptyCart} alt="Animated GIF" />
         </div>
       </div>
     );

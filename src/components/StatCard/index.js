@@ -15,12 +15,7 @@ const Stats = () => {
     try {
       const accessToken = authContext.getAccessToken();
       const response = await axios.get(
-        "http://localhost:8080/categories/count",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },          
-        }
+        "http://localhost:8080/categories/count"        
       );
       const data = response.data;
       setNumberCategories(data);

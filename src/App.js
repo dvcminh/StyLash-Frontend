@@ -84,10 +84,10 @@ function App() {
             <Route
               path="/api/products/:id"
               element={
-                <PrivateRoute>
+                <>
                   <Header />
                   <Product />
-                </PrivateRoute>
+                </>
               }
             />
 
@@ -104,11 +104,11 @@ function App() {
             <Route
               path="/changePassword"
               element={
-                <>
+                <PrivateRoute>
                   <Header />
                   <ChangePassword />
                   <Footer />
-                </>
+                </PrivateRoute>
               }
             />
             <Route
@@ -117,7 +117,6 @@ function App() {
                 <>
                   <Header />
                   <CategoryProducts />
-                  <Footer />
                 </>
               }
             />

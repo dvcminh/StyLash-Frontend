@@ -459,13 +459,7 @@ export default function Sidebar() {
                 </List>
               </AccordionBody>
             </Accordion>
-            <hr className="my-2 border-blue-gray-50" />
-            <ListItem>
-              <ListItemPrefix>
-                <Cog6ToothIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Settings
-            </ListItem>
+            <hr className="my-2 border-blue-gray-50" />            
             <ListItem onClick={() => handleLogout()}>
               <ListItemPrefix>
                 <PowerIcon className="h-5 w-5" />
