@@ -46,6 +46,7 @@ import Report from "./components/Admin/Report";
 import { ChangePassword } from "./components/ChangePassword/ChangePassword";
 import { Management } from "./components/Admin/Management";
 import Wishlist from "./components/Wishlist/Wishlist";
+import AdminRoute from "./components/misc/AdminRoute";
 
 function App() {
   const [userData, setUserData] = useState({
@@ -197,7 +198,7 @@ function App() {
             <Route
               path="/admin/dashboard"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <Admin />
 
@@ -207,174 +208,174 @@ function App() {
                   {/* <div className="chart-item mt-12 m-auto">
                     <LineChart chartData={userData} />
                   </div> */}
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/orders"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <AdminOrders />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/orders/:id"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <OrdersDetail />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/products"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <AdminProducts />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/update-product/:id"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <UpdateProductForm />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/customers"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <Customer />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/addProduct"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     {/* <ProductForm onProductSubmit={handleProductSubmit} />
                     {product && <ProductImage imageUrl={product.imageUrl} />} */}
                     <AddProductForm />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/category"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <Category />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/updateCategory/:id"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <UpdateCategoryForm />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/addCategory/"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <AddCategoryForm />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/voucher/"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <Vouchers />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/updateVoucher/:id"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <UpdateVoucherForm />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/addVoucher"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <AddVoucherForm />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/likes"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <Likes />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/reports"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <Report />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route
               path="/admin/management"
               element={
-                <>
+                <AdminRoute>
                   <Sidebar />
                   <section className="max-w-[60rem] w-[90%] my-8 mx-auto animate-meals-appear mt-20">
                     <Management />
                   </section>
-                </>
+                </AdminRoute>
               }
             />
             <Route path="/login" element={<LoginForm />} />
