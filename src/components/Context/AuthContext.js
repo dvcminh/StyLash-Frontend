@@ -11,19 +11,10 @@ export const AuthContext = createContext("");
 export const AuthProvider = ({ children }) => {
   const { setNotification } = useContext(NotificationContext);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [role, setRole] = useState("");
 
   useEffect(() => {
     checkUserLoggedIn();
-    checkRole();
   });
-
-  const checkRole = () => {
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    if (userData) {
-      setRole(userData.role);
-    }
-  };
 
   const register = async (registerData) => {
     try {
@@ -181,7 +172,6 @@ export const AuthProvider = ({ children }) => {
 
   const authContextValue = {
     isLoggedIn,
-    role,
     register,
     login,
     logout,
