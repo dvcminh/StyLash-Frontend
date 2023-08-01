@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+<div id="Top"></div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🛒 Stylash - Ứng dụng Kinh doanh thời trang Online
 
-## Available Scripts
+Ứng dụng này sẽ giúp quản lý các sản phẩm, đơn hàng, khách hàng và các hoạt động kinh doanh khác một cách dễ dàng, đồng thời tạo ra các công cụ hữu ích và trải nghiệm tốt cho người dùng.
 
-In the project directory, you can run:
 
-### `npm start`
+## 📖 Mục lục
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+ [I. Mở đầu](#Modau)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ [II. Mô tả](#Mota)
 
-### `npm test`
+> [1. Ý tưởng](#Ytuong)
+>
+> [2. Công nghệ](#Congnghe)
+>
+> [3. Người dùng](#Doituongsudung)
+>
+> [4. Tính năng](#Tinhnang)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[III. Tác giả](#Tacgia)
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[IV. Tổng kết](#Tongket)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<!-- MỞ ĐẦU -->
+<div id="Modau"></div>
 
-### `npm run eject`
+## ✍️ I. Mở đầu
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Trong thời đại số hóa, ngành công nghiệp thời trang đang phát triển mạnh mẽ và cạnh tranh cao. Để giúp các doanh nghiệp thời trang tối ưu hóa quá trình quản lý và kinh doanh, chúng ta cần xây dựng một ứng dụng web hiệu quả và tiện lợi. Chính vì thế, Stylash được khai sinh ra nhằm giải quyết các vấn đề này.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<!-- MÔ TẢ -->
+<div id="Mota"></div>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📝 II. Mô tả
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<!-- Ý TƯỞNG -->
+<div id="Ytuong"></div>
 
-## Learn More
+### 💁 1. Ý tưởng
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Xây dựng một ứng dụng web quản lý và kinh doanh thời trang sử dụng các công nghệ chủ chốt như Spring, React, Tailwind CSS và JWT (JSON Web Tokens). Ứng dụng sẽ hướng tới các mục tiêu sau:
+  * Quản lý Sản phẩm: Cung cấp giao diện quản lý để thêm, sửa đổi và xóa thông tin về các sản phẩm thời trang. Mỗi sản phẩm sẽ bao gồm thông tin như tên, mô tả, hình ảnh, giá cả.
+  * Quản lý Đơn hàng: Cung cấp chức năng để xem, xác nhận và xử lý các đơn hàng từ khách hàng. Đơn hàng sẽ chứa thông tin về sản phẩm đã mua, số lượng, giá cả và thông tin liên hệ của khách hàng.
+  * Quản lý Khách hàng: Cho phép quản lý thông tin khách hàng, bao gồm tên, địa chỉ, số điện thoại và lịch sử mua hàng.
+  * Chức năng Tìm kiếm và Lọc sản phẩm: Cung cấp khả năng tìm kiếm nhanh chóng và lọc các sản phẩm dựa trên tiêu chí như loại sản phẩm, màu sắc, giá cả, và thương hiệu.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+<div id="Congnghe"></div>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 📜  2. Công nghệ
 
-### Analyzing the Bundle Size
+  * Spring Framework: Sử dụng Spring để xây dựng phía back-end của ứng dụng, bao gồm xử lý logic, tạo API, quản lý dữ liệu và xác thực người dùng.
+  * React: Sử dụng React để xây dựng phía front-end của ứng dụng, tạo các giao diện tương tác và hiển thị dữ liệu động.
+  * Tailwind CSS: Sử dụng Tailwind CSS để thiết kế giao diện người dùng, tận dụng các lớp CSS tiền xử lý để đạt được trải nghiệm tốt và phản hồi nhanh chóng.
+  * JSON Web Tokens (JWT): Sử dụng JWT để xác thực người dùng và quản lý phiên đăng nhập, đảm bảo tính bảo mật của ứng dụng.
+  * Cơ sở dữ liệu: Sử dụng MySQL để lưu trữ thông tin về sản phẩm, đơn hàng, lượt thích, thể loại và khách hàng.
+  * Công cụ Phát triển: Sử dụng công cụ Visual Studio Code, IntelliJ, Maven, MySQL, Postman, Trình duyệt để phát triển và kiểm thử ứng dụng một cách hiệu quả.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+<div id="Doituongsudung"></div>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 📌 3. Đối tượng sử dụng
 
-### Advanced Configuration
+  * Quản lý (Admin)
+  * Người dùng (User)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+<div id="Tinhnang"></div>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 📃 4. Tính năng
+
+- Khách hàng
+  * Đăng ký tài khoản
+  * Đăng nhập tài khoản
+  * Lấy lại mật khẩu bằng Email
+  * Trang chủ hiển thị thông tin của cửa hàng, sản phẩm, xếp hạng sản phẩm
+  * Khách hàng có thể chọn sản phẩm theo sở thích cá nhân để thêm sản phẩm của cửa hàng vào giỏ hàng.
+  * Khách hàng có thể chọn sản phẩm nhiều loại, tùy vào: màu sắc, kích cỡ, số lượng.
+  * Giỏ hàng hiển thị các thông tin sản phẩm đã đặt, màu sắc của sản phẩm, size của sản phẩm, số lượng mỗi mặt hàng, có thể xác nhận đặt hoặc hủy giỏ hàng hiện tại.
+  * Lịch sử đặt hàng hiển thị tất cả các đơn hàng đã từng đặt, theo dõi hiện trạng của đơn hàng và hiển thị tổng tiền đã chi tiêu.
+  * Ngoài ra lịch sử đặt hàng có thể theo dõi các đơn hàng đã đặt theo ý muốn bằng chức năng filter, search.
+  * Lọc sản phẩm, tìm kiếm sản phẩm theo tên, sắp xếp sản phẩm
+  * Voucher giảm giá
+  * Gửi feedback về cho chủ của hàng
+  * Hiển thị thông tin cá nhân
+  * Chỉnh sửa thông tin cá nhân
+  * Hiển thị thông tin hóa đơn, tình trạng giao hàng, tình trạng nhận tiền
+  * Hiển thị chi tiết thông tin hóa đơn
+  * Tương tác với các sản phẩm thông qua nút thích
+  * Lập wishlist các sản phẩm mong ước
+
+- Về chủ cửa hàng
+  * Quản lý cửa hàng online 
+  * Quản lý đơn hàng của khách hàng (hóa đơn chưa giao, hóa đơn chưa thanh toán), có thể filter, search khách hàng
+  * Quản lý sản phẩm của cửa hàng, có thể thêm hoặc xóa sản phẩm, chỉnh sửa thông tin sản phẩm, có thể xem chi tiết, filter, search 
+  * Quản lý thông tin khách hàng đã mua hàng, có thể xem chi tiết, filter, search tên khách hàng
+  * Quản lý các đơn hàng đã giao, có thể xem chi tiết, filter, search các đơn hàng
+  * Chỉnh sửa thông tin cá nhân của cửa hàng
+  * Thay đổi mật khẩu cửa hàng
+  * Đăng xuất khỏi cửa hàng
+
+
+<!-- TÁC GIẢ -->
+<div id="Tacgia"></div>
+
+## 👊 III. Tác giả
+
+* [Vũ Đức Minh](https://github.com/dvcminh)
+  * Vai trò: Leader, Frontend developer, Backend developer, Database designer
+
+
+<!-- TỔNG KẾT -->
+<div id="Tongket"></div>
+
+## 🚩 IV. Tổng kết
+
+* Ưu điểm của ứng dụng:
+  * Cung cấp các công cụ hữu ích để ghi lại thông tin đơn hàng, theo dõi đơn hàng, đặt hàng dễ dàng, thông tin sản phẩm được yêu thích nhất và quản lý thông tin
+  * Kết nối với cộng đồng người dùng
+  * Giao diện đẹp, thân thiện người dùng 
+
+
+
+* Hướng phát triển của ứng dụng:
+  * Phát triển tính năng giao tiếp giữa người dùng. 
+  * Phát triển tính năng tích hợp AI sử dụng mô hình recommender system. 
+
+---
+
+<p align="right"><a href="#Top">Quay lại đầu trang</a></p>
